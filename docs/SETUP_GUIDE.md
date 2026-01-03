@@ -2,6 +2,18 @@
 
 이 문서는 `investment-insights-blog` 저장소와 `gemini-cli-git` 저장소 간 연동 설정 방법을 안내합니다.
 
+## 🌐 현재 배포 상태
+
+- **Production URL**: https://investment-insights-blog.vercel.app
+- **GitHub Repository**: https://github.com/adalgu/investment-insights-blog
+- **포스트 수**: 206개 (2026-01-03 기준)
+
+## 📚 관련 문서
+
+- [ARCHITECTURE.md](ARCHITECTURE.md) - 시스템 구성도 및 데이터 흐름
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - 문제 해결 가이드
+- [HUGO_FORMATTER_IMPROVEMENTS.md](HUGO_FORMATTER_IMPROVEMENTS.md) - 소스 에이전트 개선 요청
+
 ---
 
 ## 📋 목차
