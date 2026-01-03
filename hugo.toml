@@ -10,8 +10,9 @@ buildFuture = false
 buildExpired = false
 enableEmoji = true
 
-# 페이지네이션
-paginate = 10
+# 페이지네이션 (Hugo 0.128.0+ 호환)
+[pagination]
+  pagerSize = 10
 
 [params]
   # 기본 설정
