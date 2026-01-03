@@ -1,4 +1,4 @@
-baseURL = 'https://public-seven-wine.vercel.app/'
+baseURL = 'https://investment-insights-blog.vercel.app/'
 languageCode = 'ko-KR'
 title = '투자 인사이트 블로그'
 theme = 'PaperMod'
