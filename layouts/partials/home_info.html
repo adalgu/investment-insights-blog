@@ -1,0 +1,40 @@
+{{- with site.Params.homeInfoParams }}
+<article class="first-entry home-info agent-hero">
+    <div class="agent-hero__grid">
+        <div class="agent-hero__copy">
+            <header class="entry-header">
+                <h1>{{ .Title | markdownify }}</h1>
+            </header>
+            <div class="entry-content">
+                {{ .Content | markdownify }}
+            </div>
+            <footer class="entry-footer">
+                {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
+            </footer>
+        </div>
+
+        <aside class="agent-hero__pipeline" aria-label="Agent pipeline">
+            <h2 class="agent-hero__pipeline-title">Agent Pipeline</h2>
+            <ol class="agent-pipeline">
+                <li class="agent-pipeline__step agent-pipeline__step--watcher">
+                    <span class="agent-pipeline__role">Market Watcher</span>
+                    <span class="agent-pipeline__desc">시황·뉴스 신호 포착</span>
+                </li>
+                <li class="agent-pipeline__step agent-pipeline__step--black">
+                    <span class="agent-pipeline__role">Team Black</span>
+                    <span class="agent-pipeline__desc">역발상·리스크 프라이싱</span>
+                </li>
+                <li class="agent-pipeline__step agent-pipeline__step--white">
+                    <span class="agent-pipeline__role">Team White</span>
+                    <span class="agent-pipeline__desc">정석·데이터 기반 검증</span>
+                </li>
+                <li class="agent-pipeline__step agent-pipeline__step--judge">
+                    <span class="agent-pipeline__role">Judge</span>
+                    <span class="agent-pipeline__desc">종합·액션 아이템 제시</span>
+                </li>
+            </ol>
+        </aside>
+    </div>
+</article>
+{{- end -}}
+

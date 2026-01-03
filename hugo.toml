@@ -1,6 +1,8 @@
 baseURL = 'https://investment-insights-blog.vercel.app/'
 languageCode = 'ko-KR'
-title = '투자 인사이트 블로그'
+defaultContentLanguage = 'ko'
+hasCJKLanguage = true
+title = '🚀 흑백에이전트: 투자 계급 전쟁'
 theme = 'PaperMod'
 
 # 빌드 설정
@@ -34,6 +36,16 @@ enableEmoji = true
   hideSummary = false
   showtoc = true
   tocopen = false
+
+  # 브랜드 라벨 (헤더)
+  [params.label]
+    text = "흑백에이전트"
+    iconSVG = '''<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 5c0 2.1 1.8 3.8 4 3.8S16 7.1 16 5 14.2 1.2 12 1.2 8 2.9 8 5Z" stroke="currentColor" stroke-width="1.8"/><path d="M12 8.8v12.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'''
+
+  # 테마 컬러(브라우저 UI)
+  [params.assets]
+    theme_color = "#07070a"
+    msapplication_TileColor = "#07070a"
 
   # 홈 프로필
   [params.homeInfoParams]

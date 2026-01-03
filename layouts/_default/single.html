@@ -1,0 +1,83 @@
+{{- define "main" }}
+
+{{- $side := .Params.side | default "" -}}
+{{- $isWinner := eq .Params.winner "true" -}}
+{{- $isJudge := eq .Params.judge true -}}
+{{- $sideClass := "" -}}
+{{- if eq $side "Black" }}{{ $sideClass = "post-black-side" }}{{ end -}}
+{{- if eq $side "White" }}{{ $sideClass = "post-white-side" }}{{ end -}}
+{{- if $isWinner }}{{ $sideClass = printf "%s post-judge-choice" $sideClass }}{{ end -}}
+{{- if $isJudge }}{{ $sideClass = printf "%s post-judge-post" $sideClass }}{{ end -}}
+
+<article class="post-single {{ $sideClass }}"{{ with $side }} data-side="{{ . | lower }}"{{ end }}{{ if $isWinner }} data-winner="true"{{ end }}{{ if $isJudge }} data-judge="true"{{ end }}>
+  <header class="post-header">
+    {{- if or $isJudge (eq $side "Black") (eq $side "White") $isWinner }}
+    <div class="agent-post-badges">
+      {{- if $isJudge }}<span class="side-indicator indicator-judge">Judge</span>{{ end }}
+      {{- if eq $side "Black" }}<span class="side-indicator indicator-black">Team Black</span>{{ end }}
+      {{- if eq $side "White" }}<span class="side-indicator indicator-white">Team White</span>{{ end }}
+      {{- if and $isWinner (not $isJudge) }}<span class="side-indicator indicator-judge">Judge’s Pick</span>{{ end }}
+    </div>
+    {{- end }}
+
+    {{ partial "breadcrumbs.html" . }}
+    <h1 class="post-title entry-hint-parent">
+      {{ .Title }}
+      {{- if .Draft }}
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+      {{- end }}
+    </h1>
+    {{- if .Description }}
+    <div class="post-description">
+      {{ .Description }}
+    </div>
+    {{- end }}
+    {{- if not (.Param "hideMeta") }}
+    <div class="post-meta">
+      {{- partial "post_meta.html" . -}}
+      {{- partial "translation_list.html" . -}}
+      {{- partial "edit_post.html" . -}}
+      {{- partial "post_canonical.html" . -}}
+    </div>
+    {{- end }}
+  </header>
+  {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
+  {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" $isHidden) }}
+  {{- if (.Param "ShowToc") }}
+  {{- partial "toc.html" . }}
+  {{- end }}
+
+  {{- if .Content }}
+  <div class="post-content">
+    {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" .Content -}}
+    {{- else }}{{ .Content }}{{ end }}
+  </div>
+  {{- end }}
+
+  <footer class="post-footer">
+    {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
+    <ul class="post-tags">
+      {{- range ($.GetTerms $tags) }}
+      <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
+      {{- end }}
+    </ul>
+    {{- if (.Param "ShowPostNavLinks") }}
+    {{- partial "post_nav_links.html" . }}
+    {{- end }}
+    {{- if (and site.Params.ShowShareButtons (ne .Params.disableShare true)) }}
+    {{- partial "share_icons.html" . -}}
+    {{- end }}
+  </footer>
+
+  {{- if (.Param "comments") }}
+  {{- partial "comments.html" . }}
+  {{- end }}
+</article>
+
+{{- end }}{{/* end main */}}
