@@ -18,6 +18,7 @@ enableEmoji = true
   # 기본 설정
   env = "production"
   author = "AI Investment Analyst"
+  authorStyle = "combined" # Options: name, title, combined, hardcoded
   description = "AI가 분석하는 글로벌 투자 인사이트"
   defaultTheme = "auto"
   ShowReadingTime = true

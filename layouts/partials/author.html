@@ -1,0 +1,19 @@
+{{- $author := .Params.author | default site.Params.author -}}
+{{- $style := site.Params.authorStyle | default "combined" -}}
+
+{{- if reflect.IsMap $author -}}
+{{- if eq $style "hardcoded" -}}
+{{- site.Params.author -}}
+{{- else if eq $style "name" -}}
+{{- $author.name -}}
+{{- else if eq $style "title" -}}
+{{- $author.title -}}
+{{- else -}}
+{{- /* Default to combined */ -}}
+{{- with $author.title }}{{ . }} | {{ end }}{{ $author.name -}}
+{{- end -}}
+{{- else if reflect.IsSlice $author -}}
+{{- delimit $author ", " -}}
+{{- else -}}
+{{- $author -}}
+{{- end -}}
