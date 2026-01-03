@@ -1,0 +1,94 @@
+baseURL = 'https://public-seven-wine.vercel.app/'
+languageCode = 'ko-KR'
+title = '투자 인사이트 블로그'
+theme = 'PaperMod'
+
+# 빌드 설정
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+enableEmoji = true
+
+# 페이지네이션
+paginate = 10
+
+[params]
+  # 기본 설정
+  env = "production"
+  author = "AI Investment Analyst"
+  description = "AI가 분석하는 글로벌 투자 인사이트"
+  defaultTheme = "auto"
+  ShowReadingTime = true
+  ShowShareButtons = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowWordCount = true
+  ShowRssButtonInSectionTermList = true
+  UseHugoToc = true
+  disableSpecialChars = false
+  disableScrollToTop = false
+  hideSummary = false
+  showtoc = true
+  tocopen = false
+
+  # 홈 프로필
+  [params.homeInfoParams]
+    Title = "🚀 AI 기반 투자 인사이트"
+    Content = "글로벌 시장 동향을 AI가 분석하여 균형 잡힌 투자 인사이트를 제공합니다."
+
+  # 소셜 아이콘
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/grrulssa"
+
+  # 검색 설정
+  [params.fuseOpts]
+    isCaseSensitive = false
+    shouldSort = true
+    location = 0
+    distance = 1000
+    threshold = 0.4
+    minMatchCharLength = 0
+    keys = ["title", "permalink", "summary", "content"]
+
+# 메뉴
+[menu]
+  [[menu.main]]
+    identifier = "search"
+    name = "검색"
+    url = "/search/"
+    weight = 10
+  [[menu.main]]
+    identifier = "tags"
+    name = "태그"
+    url = "/tags/"
+    weight = 20
+  [[menu.main]]
+    identifier = "categories"
+    name = "카테고리"
+    url = "/categories/"
+    weight = 30
+  [[menu.main]]
+    identifier = "archives"
+    name = "아카이브"
+    url = "/archives/"
+    weight = 40
+
+# 출력 포맷
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+# 마크다운 설정
+[markup]
+  [markup.highlight]
+    noClasses = false
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+    style = "monokai"
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

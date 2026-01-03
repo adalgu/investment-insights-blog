@@ -1,0 +1,18 @@
+# 빌드 결과물
+public/
+
+# Hugo 리소스 캐시
+resources/
+
+# OS 파일
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# 환경 변수
+.env
+.env.local
