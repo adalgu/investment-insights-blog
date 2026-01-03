@@ -1,0 +1,34 @@
+{{- $type := .Get "type" | default "info" -}}
+{{- $title := .Get "title" | default "" -}}
+{{- $icon := .Get "icon" | default "" -}}
+
+{{- $bgColor := "" -}}
+{{- $borderColor := "" -}}
+{{- $iconEmoji := "" -}}
+
+{{- if eq $type "warning" -}}
+  {{- $bgColor = "#fff3cd" -}}
+  {{- $borderColor = "#ffc107" -}}
+  {{- $iconEmoji = "⚠️" -}}
+{{- else if eq $type "danger" -}}
+  {{- $bgColor = "#f8d7da" -}}
+  {{- $borderColor = "#dc3545" -}}
+  {{- $iconEmoji = "🚨" -}}
+{{- else if eq $type "success" -}}
+  {{- $bgColor = "#d4edda" -}}
+  {{- $borderColor = "#28a745" -}}
+  {{- $iconEmoji = "✅" -}}
+{{- else -}}
+  {{- $bgColor = "#d1ecf1" -}}
+  {{- $borderColor = "#17a2b8" -}}
+  {{- $iconEmoji = "ℹ️" -}}
+{{- end -}}
+
+<div style="background-color: {{ $bgColor }}; border-left: 4px solid {{ $borderColor }}; padding: 1rem; margin: 1rem 0; border-radius: 4px;">
+  {{- if $title -}}
+  <strong style="display: block; margin-bottom: 0.5rem;">{{ $iconEmoji }} {{ $title }}</strong>
+  {{- else -}}
+  <span style="margin-right: 0.5rem;">{{ $iconEmoji }}</span>
+  {{- end -}}
+  {{ .Inner }}
+</div>
