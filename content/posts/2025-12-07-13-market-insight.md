@@ -3,10 +3,10 @@ draft: false
 type: post
 layout: single
 author:
-name: Synthesis Expert
-title: Senior Investment Columnist
-bio: 금융시장 전문 분석가
-avatar: /images/authors/synthesis-expert.png
+  name: Synthesis Expert
+  authorTitle: Senior Investment Columnist
+  bio: 금융시장 전문 분석가
+  avatar: /images/authors/synthesis-expert.png
 categories:
 - 테마분석
 tags:
@@ -48,8 +48,7 @@ subtitle: 시장은 열광하지만, 완전 자율주행까지의 '마지막 1�
 slug: ai-autonomous-driving-investment-reality-check
 date: '2025-12-07T13:00:00+09:00'
 lastmod: '2025-12-07T13:00:00+09:00'
-description: AI 자율주행차 시장의 뜨거운 열기 속, 투자자가 반드시 알아야 할 낙관론과 비관론의 핵심을 짚어봅니다. 기술적 잠재력과 상용화의
-현실적 난관을 비교 분석하고 실질적인 투자 가이드를 제시합니다.
+description: "AI 자율주행차 시장의 뜨거운 열기 속, 투자자가 반드시 알아야 할 낙관론과 비관론의 핵심을 짚어봅니다. 기술적 잠재력과 상용화의 현실적 난관을 비교 분석하고 실질적인 투자 가이드를 제시합니다."
 ---
 > **이 기사의 핵심 3줄 요약**
 > 1. AI와 자율주행은 자동차 산업의 패러다임을 바꿀 메가트렌드이며, 관련 시장의 성장 잠재력은 매우 큽니다.
