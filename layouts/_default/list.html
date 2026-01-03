@@ -45,13 +45,190 @@
 {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
 {{- end }}
 
+{{- $judgePages := slice -}}
 {{- $paginator := .Paginate $pages }}
+{{- if .IsHome }}
+    {{- $judgePages = where $pages "Params.judge" true -}}
+    {{- if gt (len $judgePages) 0 }}
+        {{- $judgePages = sort $judgePages "Date" "desc" -}}
+        {{- $paginator = .Paginate $judgePages -}}
+    {{- end }}
+{{- end }}
 
 {{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
 {{- partial "home_info.html" . }}
 {{- end }}
 
 {{- $term := .Data.Term }}
+<div class="agent-feed">
+{{- if and .IsHome (gt (len $judgePages) 0) }}
+{{- range $index, $judge := $paginator.Pages }}
+{{- $matchId := $judge.Params.match_id | default "" -}}
+{{- $matchPages := slice -}}
+{{- if $matchId }}
+    {{- $matchPages = where $pages "Params.match_id" $matchId -}}
+    {{- $matchPages = where $matchPages "Params.judge" "!=" true -}}
+{{- end }}
+{{- $blackPages := where $matchPages "Params.side" "Black" -}}
+{{- $whitePages := where $matchPages "Params.side" "White" -}}
+{{- $blackPage := false -}}
+{{- $whitePage := false -}}
+{{- if gt (len $blackPages) 0 }}{{- $blackPage = index (sort $blackPages "Date" "desc") 0 -}}{{- end }}
+{{- if gt (len $whitePages) 0 }}{{- $whitePage = index (sort $whitePages "Date" "desc") 0 -}}{{- end }}
+{{- $delayBase := mul $index 140 -}}
+{{- $judgeDelay := $delayBase -}}
+{{- $blackDelay := add $delayBase 60 -}}
+{{- $whiteDelay := add $delayBase 120 -}}
+
+<section class="agent-match"{{ with $matchId }} data-match="{{ . }}"{{ end }}>
+    {{- with $judge }}
+    {{- $side := .Params.side | default "" -}}
+    {{- $isWinner := eq .Params.winner "true" -}}
+    {{- $sideClass := "post-judge-post" -}}
+    {{- if eq $side "Black" }}{{ $sideClass = printf "%s post-black-side" $sideClass }}{{ end -}}
+    {{- if eq $side "White" }}{{ $sideClass = printf "%s post-white-side" $sideClass }}{{ end -}}
+    {{- if $isWinner }}{{ $sideClass = printf "%s post-judge-choice" $sideClass }}{{ end -}}
+
+    <article class="post-entry agent-match__card agent-match__card--judge {{ $sideClass }}" style="--agent-delay: {{ $judgeDelay }}ms" data-judge="true"{{ with $side }} data-side="{{ . | lower }}"{{ end }}{{ if $isWinner }} data-winner="true"{{ end }}>
+        <div class="agent-post-badges">
+            <span class="side-indicator indicator-judge">Judge</span>
+        </div>
+        {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+        {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+        <header class="entry-header">
+            <h2 class="entry-hint-parent">
+                {{- .Title }}
+                {{- if .Draft }}
+                <span class="entry-hint" title="Draft">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+                        <path
+                            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+                    </svg>
+                </span>
+                {{- end }}
+            </h2>
+        </header>
+        {{- if (ne (.Param "hideSummary") true) }}
+        <div class="entry-content">
+            <p>{{ with .Description }}{{ . | plainify | htmlUnescape }}{{ else }}{{ .Summary | plainify | htmlUnescape }}{{
+                end }}{{ if .Truncated }}...{{ end }}</p>
+        </div>
+        {{- end }}
+        {{- if not (.Param "hideMeta") }}
+        <footer class="entry-footer">
+            {{- partial "post_meta.html" . -}}
+        </footer>
+        {{- end }}
+        <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+    </article>
+    {{- end }}
+
+    {{- if $blackPage }}
+    {{- with $blackPage }}
+    {{- $side := .Params.side | default "" -}}
+    {{- $isWinner := eq .Params.winner "true" -}}
+    {{- $sideClass := "" -}}
+    {{- if eq $side "Black" }}{{ $sideClass = "post-black-side" }}{{ end -}}
+    {{- if $isWinner }}{{ $sideClass = printf "%s post-judge-choice" $sideClass }}{{ end -}}
+
+    <article class="post-entry agent-match__card agent-match__card--black {{ $sideClass }}" style="--agent-delay: {{ $blackDelay }}ms"{{ with $side }} data-side="{{ . | lower }}"{{ end }}{{ if $isWinner }} data-winner="true"{{ end }}>
+        <div class="agent-post-badges">
+            <span class="side-indicator indicator-black">Team Black</span>
+            {{- if $isWinner }}<span class="side-indicator indicator-judge">Judge’s Pick</span>{{ end }}
+        </div>
+        {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+        {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+        <header class="entry-header">
+            <h2 class="entry-hint-parent">
+                {{- .Title }}
+                {{- if .Draft }}
+                <span class="entry-hint" title="Draft">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+                        <path
+                            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+                    </svg>
+                </span>
+                {{- end }}
+            </h2>
+        </header>
+        {{- if (ne (.Param "hideSummary") true) }}
+        <div class="entry-content">
+            <p>{{ with .Description }}{{ . | plainify | htmlUnescape }}{{ else }}{{ .Summary | plainify | htmlUnescape }}{{
+                end }}{{ if .Truncated }}...{{ end }}</p>
+        </div>
+        {{- end }}
+        {{- if not (.Param "hideMeta") }}
+        <footer class="entry-footer">
+            {{- partial "post_meta.html" . -}}
+        </footer>
+        {{- end }}
+        <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+    </article>
+    {{- end }}
+    {{- else }}
+    <div class="post-entry agent-match__card agent-match__card--black agent-match__placeholder agent-match__placeholder--black" style="--agent-delay: {{ $blackDelay }}ms">
+        <div class="agent-post-badges">
+            <span class="side-indicator indicator-black">Team Black</span>
+        </div>
+        <div class="agent-match__placeholder-title">Pending post</div>
+        <div class="agent-match__placeholder-desc">Awaiting the black-side argument.</div>
+    </div>
+    {{- end }}
+
+    {{- if $whitePage }}
+    {{- with $whitePage }}
+    {{- $side := .Params.side | default "" -}}
+    {{- $isWinner := eq .Params.winner "true" -}}
+    {{- $sideClass := "" -}}
+    {{- if eq $side "White" }}{{ $sideClass = "post-white-side" }}{{ end -}}
+    {{- if $isWinner }}{{ $sideClass = printf "%s post-judge-choice" $sideClass }}{{ end -}}
+
+    <article class="post-entry agent-match__card agent-match__card--white {{ $sideClass }}" style="--agent-delay: {{ $whiteDelay }}ms"{{ with $side }} data-side="{{ . | lower }}"{{ end }}{{ if $isWinner }} data-winner="true"{{ end }}>
+        <div class="agent-post-badges">
+            <span class="side-indicator indicator-white">Team White</span>
+            {{- if $isWinner }}<span class="side-indicator indicator-judge">Judge’s Pick</span>{{ end }}
+        </div>
+        {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+        {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+        <header class="entry-header">
+            <h2 class="entry-hint-parent">
+                {{- .Title }}
+                {{- if .Draft }}
+                <span class="entry-hint" title="Draft">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+                        <path
+                            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+                    </svg>
+                </span>
+                {{- end }}
+            </h2>
+        </header>
+        {{- if (ne (.Param "hideSummary") true) }}
+        <div class="entry-content">
+            <p>{{ with .Description }}{{ . | plainify | htmlUnescape }}{{ else }}{{ .Summary | plainify | htmlUnescape }}{{
+                end }}{{ if .Truncated }}...{{ end }}</p>
+        </div>
+        {{- end }}
+        {{- if not (.Param "hideMeta") }}
+        <footer class="entry-footer">
+            {{- partial "post_meta.html" . -}}
+        </footer>
+        {{- end }}
+        <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+    </article>
+    {{- end }}
+    {{- else }}
+    <div class="post-entry agent-match__card agent-match__card--white agent-match__placeholder agent-match__placeholder--white" style="--agent-delay: {{ $whiteDelay }}ms">
+        <div class="agent-post-badges">
+            <span class="side-indicator indicator-white">Team White</span>
+        </div>
+        <div class="agent-match__placeholder-title">Pending post</div>
+        <div class="agent-match__placeholder-desc">Awaiting the white-side argument.</div>
+    </div>
+    {{- end }}
+</section>
+{{- end }}
+{{- else }}
 {{- range $index, $page := $paginator.Pages }}
 
 {{- $class := "post-entry" }}
@@ -63,7 +240,17 @@
 {{- $class = "post-entry tag-entry" }}
 {{- end }}
 
-<article class="{{ $class }}">
+{{- $side := .Params.side | default "" -}}
+{{- $isWinner := eq .Params.winner "true" -}}
+{{- $sideClass := "" -}}
+{{- if eq $side "Black" }}{{ $sideClass = "post-black-side" }}{{ end -}}
+{{- if eq $side "White" }}{{ $sideClass = "post-white-side" }}{{ end -}}
+{{- if $isWinner }}{{ $sideClass = printf "%s post-judge-choice" $sideClass }}{{ end -}}
+
+<article class="{{ $class }} {{ $sideClass }}" style="--agent-delay: {{ mul $index 90 }}ms"{{ with $side }} data-side="{{ . | lower }}"{{ end }}{{ if $isWinner }} data-winner="true"{{ end }}>
+    {{- if eq $side "Black" }}<span class="side-indicator indicator-black">Team Black</span>{{ end }}
+    {{- if eq $side "White" }}<span class="side-indicator indicator-white">Team White</span>{{ end }}
+    {{- if $isWinner }}<span class="side-indicator indicator-judge">Judge’s Pick</span>{{ end }}
     {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
     {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
     <header class="entry-header">
@@ -93,6 +280,8 @@
     <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
 </article>
 {{- end }}
+{{- end }}
+</div>
 
 {{- if gt $paginator.TotalPages 1 }}
 <footer class="page-footer">
