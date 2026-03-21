@@ -80,4 +80,75 @@
   {{- end }}
 </article>
 
+<script>
+(function () {
+  var content = document.querySelector('.post-content');
+  if (!content) return;
+
+  var headings = Array.prototype.slice.call(content.querySelectorAll('h1'));
+  var blackH = null, whiteH = null;
+  headings.forEach(function (h) {
+    var t = h.textContent || '';
+    if (!blackH && t.indexOf('흑 에이전트') !== -1) blackH = h;
+    if (!whiteH && t.indexOf('백 에이전트') !== -1) whiteH = h;
+  });
+  if (!blackH || !whiteH) return;
+
+  /* Tag each child element with its section */
+  var children = Array.prototype.slice.call(content.children);
+  var blackIdx = children.indexOf(blackH);
+  var whiteIdx = children.indexOf(whiteH);
+  children.forEach(function (el, i) {
+    if (i >= whiteIdx) el.dataset.agentSection = 'white';
+    else if (i >= blackIdx) el.dataset.agentSection = 'black';
+    else el.dataset.agentSection = 'intro';
+  });
+
+  /* Inject tab bar */
+  var tabs = document.createElement('div');
+  tabs.className = 'agent-tabs';
+  tabs.innerHTML =
+    '<button class="agent-tab active" data-show="all">📋 전체 보기</button>' +
+    '<button class="agent-tab" data-show="black">🌑 흑 에이전트</button>' +
+    '<button class="agent-tab" data-show="white">⚪ 백 에이전트</button>';
+  content.insertBefore(tabs, content.firstChild);
+
+  function showTab(tab) {
+    tabs.querySelectorAll('.agent-tab').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.show === tab);
+    });
+    children.forEach(function (el) {
+      var s = el.dataset.agentSection;
+      if (!s) return;
+      if (tab === 'all') {
+        el.style.display = '';
+      } else if (s === 'intro') {
+        el.style.display = '';
+      } else {
+        el.style.display = (s === tab) ? '' : 'none';
+      }
+    });
+    /* Update URL hash without scrolling */
+    if (history.replaceState) {
+      history.replaceState(null, '', tab === 'all' ? location.pathname : location.pathname + '#' + tab);
+    }
+  }
+
+  tabs.addEventListener('click', function (e) {
+    var btn = e.target.closest('.agent-tab');
+    if (btn) showTab(btn.dataset.show);
+  });
+
+  /* Initial state from URL hash */
+  var hash = (location.hash || '').toLowerCase();
+  if (hash.indexOf('black') !== -1 || hash.indexOf('흑') !== -1) {
+    showTab('black');
+    setTimeout(function () { blackH.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80);
+  } else if (hash.indexOf('white') !== -1 || hash.indexOf('백') !== -1) {
+    showTab('white');
+    setTimeout(function () { whiteH.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80);
+  }
+})();
+</script>
+
 {{- end }}{{/* end main */}}

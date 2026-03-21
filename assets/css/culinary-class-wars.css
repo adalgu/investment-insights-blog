@@ -652,6 +652,72 @@ body.list.home .agent-match__placeholder--white {
     padding: 6px 12px;
 }
 
+/* ── Single post: agent tab switcher ── */
+.agent-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 28px;
+    padding: 4px;
+    background: color-mix(in srgb, var(--entry) 88%, transparent);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    width: fit-content;
+    position: sticky;
+    top: calc(var(--header-height) + 12px);
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+@supports not (color-mix(in srgb, black, white)) {
+    .agent-tabs {
+        background: var(--entry);
+    }
+}
+
+.agent-tab {
+    padding: 7px 18px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--secondary);
+    font-family: var(--agent-font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background 130ms ease, color 130ms ease;
+    white-space: nowrap;
+}
+
+.agent-tab:hover {
+    background: color-mix(in srgb, var(--primary) 8%, transparent);
+    color: var(--primary);
+}
+
+.agent-tab.active {
+    background: var(--primary);
+    color: var(--theme);
+}
+
+.agent-tab[data-show="black"].active {
+    background: var(--agent-gold);
+    color: var(--agent-black);
+}
+
+.agent-tab[data-show="white"].active {
+    background: var(--agent-black);
+    color: var(--agent-white);
+}
+
+@media screen and (max-width: 768px) {
+    .agent-tabs {
+        position: static;
+        flex-wrap: wrap;
+        border-radius: 16px;
+    }
+}
+
 /* Reduced motion: disable 3D + big transforms */
 @media (prefers-reduced-motion: reduce) {
     .post-entry,
