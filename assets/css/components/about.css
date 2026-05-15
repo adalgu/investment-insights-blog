@@ -1,0 +1,347 @@
+/* About page — magazine-tone, hairline gold, no emoji decorations. */
+
+.about-page {
+    max-width: 880px;
+}
+
+.about-page__header {
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+}
+
+.about-page__eyebrow {
+    font-family: var(--agent-font-display);
+    letter-spacing: 0.4em;
+    font-size: 11px;
+    color: var(--agent-gold);
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+}
+
+.about-page__title {
+    font-family: var(--agent-font-display);
+    font-style: italic;
+    font-size: clamp(34px, 5vw, 60px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin: 0 0 14px 0;
+}
+
+.about-page__description {
+    color: var(--secondary);
+    font-size: 17px;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 60ch;
+}
+
+.about-page__body h2 {
+    font-family: var(--agent-font-display);
+    font-style: italic;
+    font-size: clamp(24px, 3vw, 32px);
+    letter-spacing: -0.015em;
+    margin: 48px 0 16px;
+    padding-top: 28px;
+    border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.about-page__body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 14px;
+}
+
+.about-page__body th,
+.about-page__body td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+    vertical-align: top;
+}
+
+.about-page__body th {
+    font-family: var(--agent-font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    color: var(--agent-gold);
+    border-bottom-width: 2px;
+}
+
+.about-page__body strong {
+    color: var(--primary);
+}
+
+.about-page__footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    text-align: center;
+}
+
+.about-page__signoff {
+    font-family: var(--agent-font-display);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--secondary);
+}
+
+/* ── Diagrams ─────────────────────────────────────────────────── */
+
+.about-diagram {
+    margin: 28px 0 36px;
+    padding: 18px;
+    border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--entry) 90%, transparent);
+}
+
+.about-diagram svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    color: var(--secondary);
+}
+
+/* Pipeline (7 steps) */
+.abp-step__box {
+    fill: var(--entry);
+    stroke: color-mix(in srgb, var(--border) 80%, transparent);
+    stroke-width: 1;
+}
+.abp-step--gold .abp-step__box   { stroke: var(--agent-gold); }
+.abp-step--black .abp-step__box  { fill: var(--agent-black);  }
+.abp-step--white .abp-step__box  { fill: var(--agent-white);  stroke: var(--primary); }
+.abp-step--neutral .abp-step__box { fill: color-mix(in srgb, var(--entry) 92%, transparent); }
+
+.abp-step__num {
+    font-family: var(--agent-font-display);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    fill: var(--agent-gold);
+}
+.abp-step__label {
+    font-family: var(--agent-font-sans);
+    font-weight: 700;
+    font-size: 13px;
+    fill: var(--primary);
+}
+.abp-step__sub {
+    font-family: var(--agent-font-sans);
+    font-size: 10px;
+    fill: var(--secondary);
+}
+.abp-step--black .abp-step__label,
+.abp-step--black .abp-step__sub  { fill: var(--agent-white); }
+.abp-step--white .abp-step__label,
+.abp-step--white .abp-step__sub  { fill: var(--agent-black); }
+
+.abp-arrow {
+    stroke: color-mix(in srgb, var(--agent-gold) 70%, transparent);
+    stroke-width: 1.2;
+    color: color-mix(in srgb, var(--agent-gold) 70%, transparent);
+}
+
+.abp-caption {
+    font-family: var(--agent-font-display);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 11px;
+    fill: var(--secondary);
+}
+
+/* Fallback chain (4 models) */
+.abf-card__box {
+    fill: var(--entry);
+    stroke: color-mix(in srgb, var(--border) 80%, transparent);
+    stroke-width: 1;
+}
+.abf-card--0 .abf-card__box { stroke: var(--agent-gold); stroke-width: 1.8; }
+
+.abf-card__role {
+    font-family: var(--agent-font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 10px;
+    fill: var(--agent-gold);
+}
+.abf-card__name {
+    font-family: var(--agent-font-sans);
+    font-weight: 700;
+    font-size: 16px;
+    fill: var(--primary);
+}
+.abf-card__tag {
+    font-family: var(--agent-font-sans);
+    font-size: 11px;
+    fill: var(--secondary);
+}
+
+.abf-arrow {
+    stroke: var(--secondary);
+    stroke-width: 1.2;
+    stroke-dasharray: 3 4;
+    color: var(--secondary);
+}
+.abf-arrow__label {
+    font-family: var(--agent-font-sans);
+    font-size: 10px;
+    fill: var(--secondary);
+}
+
+/* Meta-prompt loop */
+.abl-station__circle {
+    fill: var(--entry);
+    stroke: color-mix(in srgb, var(--agent-gold) 50%, transparent);
+    stroke-width: 1.4;
+}
+.abl-station--1 .abl-station__circle { stroke: var(--agent-gold); stroke-width: 1.8; }
+
+.abl-station__num {
+    font-family: var(--agent-font-display);
+    letter-spacing: 0.16em;
+    font-size: 10px;
+    fill: var(--agent-gold);
+}
+.abl-station__label {
+    font-family: var(--agent-font-sans);
+    font-weight: 700;
+    font-size: 12px;
+    fill: var(--primary);
+}
+.abl-station__sub {
+    font-family: var(--agent-font-sans);
+    font-size: 10px;
+    fill: var(--secondary);
+}
+
+.abl-arc {
+    stroke: color-mix(in srgb, var(--agent-gold) 60%, transparent);
+    stroke-width: 1.4;
+    color: color-mix(in srgb, var(--agent-gold) 60%, transparent);
+}
+
+.abl-loop-caption {
+    font-family: var(--agent-font-display);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 11px;
+    fill: var(--secondary);
+}
+
+/* ── Stats grid ───────────────────────────────────────────────── */
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 24px 0 32px;
+}
+
+.about-stats__cell {
+    padding: 18px 14px;
+    border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--entry) 92%, transparent);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.about-stats__cell--wide {
+    grid-column: 1 / -1;
+}
+
+.about-stats__num {
+    font-family: var(--agent-font-display);
+    font-size: 32px;
+    line-height: 1;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.about-stats__num--small {
+    font-size: 16px;
+    font-family: var(--agent-font-sans);
+    color: var(--secondary);
+}
+
+.about-stats__label {
+    font-family: var(--agent-font-sans);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--secondary);
+}
+
+/* ── FAQ (native details/summary) ─────────────────────────────── */
+.about-faq__item {
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+    padding: 0;
+}
+
+.about-faq__item[open] {
+    background: color-mix(in srgb, var(--agent-gold) 4%, transparent);
+}
+
+.about-faq__summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 16px 0;
+    font-weight: 600;
+    color: var(--primary);
+    position: relative;
+    padding-right: 36px;
+    user-select: none;
+}
+
+.about-faq__summary::-webkit-details-marker {
+    display: none;
+}
+
+.about-faq__summary::after {
+    content: "+";
+    position: absolute;
+    right: 4px;
+    top: 16px;
+    color: var(--agent-gold);
+    font-family: var(--agent-font-display);
+    font-size: 18px;
+    transition: transform 0.16s ease;
+}
+
+.about-faq__item[open] .about-faq__summary::after {
+    content: "−";
+}
+
+.about-faq__summary:focus-visible {
+    outline: 2px solid var(--agent-gold);
+    outline-offset: 4px;
+}
+
+.about-faq__body {
+    padding: 0 0 18px 0;
+    color: var(--content);
+    line-height: 1.7;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .about-page__title {
+        font-size: clamp(28px, 8vw, 42px);
+    }
+    .about-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .about-diagram {
+        padding: 10px;
+    }
+    .about-page__body th,
+    .about-page__body td {
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+}

@@ -1,0 +1,42 @@
+{{- /* Live build-time stats — exclude pages without a real date (test files etc.) */ -}}
+{{- $epochStart := time.AsTime "2020-01-01" -}}
+{{- $debates := where (where site.RegularPages "Section" "posts") "Date" "gt" $epochStart -}}
+{{- $total := len $debates -}}
+{{- $sortedAsc := sort $debates "Date" "asc" -}}
+{{- $sortedDesc := sort $debates "Date" "desc" -}}
+{{- $first := index $sortedAsc 0 -}}
+{{- $latest := index $sortedDesc 0 -}}
+{{- $dayAgo := now.AddDate 0 0 -1 -}}
+{{- $weekAgo := now.AddDate 0 0 -7 -}}
+{{- $today := len (where $debates "Date" "gt" $dayAgo) -}}
+{{- $week := len (where $debates "Date" "gt" $weekAgo) -}}
+{{- $days := 0 -}}
+{{- with $first -}}
+  {{- $secs := sub now.Unix .Date.Unix -}}
+  {{- $days = int (div $secs 86400) -}}
+{{- end -}}
+
+<div class="about-stats" role="group" aria-label="라이브 통계">
+  <div class="about-stats__cell">
+    <span class="about-stats__num">{{ $total }}</span>
+    <span class="about-stats__label">누적 라운드</span>
+  </div>
+  <div class="about-stats__cell">
+    <span class="about-stats__num">{{ $days }}</span>
+    <span class="about-stats__label">운영 일수</span>
+  </div>
+  <div class="about-stats__cell">
+    <span class="about-stats__num">{{ $week }}</span>
+    <span class="about-stats__label">최근 7일</span>
+  </div>
+  <div class="about-stats__cell">
+    <span class="about-stats__num">{{ $today }}</span>
+    <span class="about-stats__label">최근 24시간</span>
+  </div>
+  {{- with $latest }}
+  <div class="about-stats__cell about-stats__cell--wide">
+    <span class="about-stats__num about-stats__num--small">{{ .Date.Format "2006-01-02 15:04 MST" }}</span>
+    <span class="about-stats__label">최신 라운드</span>
+  </div>
+  {{- end }}
+</div>

@@ -1,0 +1,30 @@
+{{- /* 4-model fallback chain, inline SVG */ -}}
+<figure class="about-diagram about-fallback" role="img" aria-label="4단계 모델 폴백 체인">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 180" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <marker id="abf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    {{- $models := slice
+      (dict "x" 20  "name" "Codex Local"  "role" "Primary"     "tag" "self-hosted CLI")
+      (dict "x" 200 "name" "Gemini"       "role" "Fallback 1"  "tag" "Google CLI")
+      (dict "x" 380 "name" "Codex API"    "role" "Fallback 2"  "tag" "OpenAI API")
+      (dict "x" 560 "name" "Claude"       "role" "Fallback 3"  "tag" "Anthropic")
+    -}}
+    {{- range $i, $m := $models }}
+      <g class="abf-card abf-card--{{ $i }}" transform="translate({{ $m.x }},30)">
+        <rect class="abf-card__box" x="0" y="0" width="140" height="110" rx="10"/>
+        <text class="abf-card__role" x="70" y="26" text-anchor="middle">{{ $m.role }}</text>
+        <text class="abf-card__name" x="70" y="58" text-anchor="middle">{{ $m.name }}</text>
+        <text class="abf-card__tag" x="70" y="86" text-anchor="middle">{{ $m.tag }}</text>
+      </g>
+      {{- if lt $i 3 }}
+        {{- $x1 := add $m.x 140 -}}
+        {{- $x2 := add $m.x 200 -}}
+        <line class="abf-arrow" x1="{{ $x1 }}" y1="85" x2="{{ $x2 }}" y2="85" marker-end="url(#abf-arrow)"/>
+        <text class="abf-arrow__label" x="{{ add $m.x 170 }}" y="78" text-anchor="middle">실패</text>
+      {{- end }}
+    {{- end }}
+  </svg>
+</figure>

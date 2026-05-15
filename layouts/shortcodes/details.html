@@ -1,0 +1,7 @@
+{{- /* Native <details> wrapper for FAQ items */ -}}
+<details class="about-faq__item">
+  <summary class="about-faq__summary">{{ .Get "summary" }}</summary>
+  <div class="about-faq__body">
+    {{ .Inner | markdownify }}
+  </div>
+</details>

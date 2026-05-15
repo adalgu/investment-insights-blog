@@ -1,0 +1,29 @@
+{{- define "main" }}
+<article class="post-single about-page">
+  <header class="post-header about-page__header">
+    {{- partial "breadcrumbs.html" . }}
+    <p class="about-page__eyebrow">A B O U T</p>
+    <h1 class="about-page__title">{{ .Title }}</h1>
+    {{- with .Description }}
+    <p class="about-page__description">{{ . }}</p>
+    {{- end }}
+  </header>
+
+  {{- if (.Param "ShowToc") }}
+  {{- partial "toc.html" . }}
+  {{- end }}
+
+  <div class="post-content about-page__body">
+    {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" .Content -}}
+    {{- else }}{{ .Content }}{{ end }}
+  </div>
+
+  <footer class="post-footer about-page__footer">
+    <p class="about-page__signoff">
+      <span aria-hidden="true">●&nbsp;○</span>
+      &nbsp;&nbsp;흑백에이전트 · 매 3시간 무인 발행
+    </p>
+  </footer>
+</article>
+{{- end }}

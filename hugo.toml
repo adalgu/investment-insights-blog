@@ -87,6 +87,11 @@ enableEmoji = true
     url = "/categories/"
     weight = 30
   [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 35
+  [[menu.main]]
     identifier = "archives"
     name = "아카이브"
     url = "/archives/"
