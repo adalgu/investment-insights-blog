@@ -48,7 +48,7 @@
 {{/* Detect debate posts for home 3-card layout */}}
 {{- $debatePages := slice -}}
 {{- if .IsHome -}}
-    {{- $debatePages = where $pages "Params.categories" "intersect" (slice "Market Debate") -}}
+    {{- $debatePages = where $pages "Params.categories" "intersect" (slice "Market Debate" "시장토론" "시장 토론" "시황분석") -}}
     {{- if gt (len $debatePages) 0 -}}
         {{- $debatePages = sort $debatePages "Date" "desc" -}}
     {{- end -}}
