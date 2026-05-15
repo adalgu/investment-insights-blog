@@ -1,0 +1,272 @@
+/* Home feed: 흑/백/심판 매치 카드 그리드 + 사이드 인디케이터 */
+
+/* Magazine-tone mini meta inside judge card */
+.agent-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--agent-font-display);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.agent-card-meta__round {
+    color: var(--agent-gold);
+    font-weight: 700;
+}
+
+.agent-card-meta__date {
+    color: var(--secondary);
+    font-family: var(--agent-font-sans);
+    letter-spacing: 0;
+    text-transform: none;
+    font-size: 12px;
+}
+
+.agent-card-meta__sep {
+    opacity: 0.5;
+}
+
+/* Home feed grid (only active when list.html wraps in .agent-feed) */
+body.list.home .agent-feed {
+    display: grid;
+    gap: 32px;
+}
+
+body.list.home .agent-feed > .agent-match {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 18px 24px;
+}
+
+body.list.home .agent-match__card {
+    margin-bottom: 0;
+}
+
+body.list.home .agent-match__card--judge {
+    grid-column: 3 / span 8;
+}
+
+body.list.home .agent-match__card--black {
+    grid-column: 1 / span 6;
+}
+
+body.list.home .agent-match__card--white {
+    grid-column: 7 / span 6;
+}
+
+body.list.home .agent-match__placeholder {
+    border-style: dashed;
+    border-color: color-mix(in srgb, var(--border) 70%, var(--agent-gold) 30%);
+    background: color-mix(in srgb, var(--entry) 94%, transparent);
+    color: var(--secondary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 200px;
+    box-shadow: none;
+}
+
+body.list.home .agent-match__placeholder:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+body.list.home .agent-match__placeholder--black {
+    border-color: color-mix(in srgb, var(--agent-gold) 55%, var(--border) 45%);
+}
+
+body.list.home .agent-match__placeholder--white {
+    border-color: color-mix(in srgb, var(--primary) 20%, var(--border) 80%);
+}
+
+.agent-match__placeholder-title {
+    font-weight: 720;
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.agent-match__placeholder-desc {
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+/* Base card refinement (applies to all posts, including non-side) */
+.post-entry {
+    border-radius: calc(var(--radius) + 2px);
+    border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+@supports not (color-mix(in srgb, black, white)) {
+    .post-entry {
+        border-color: var(--border);
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .post-entry:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
+        border-color: color-mix(in srgb, var(--border) 45%, var(--agent-gold) 55%);
+    }
+}
+
+.post-entry:focus-within {
+    border-color: color-mix(in srgb, var(--border) 40%, var(--agent-gold) 60%);
+}
+
+/* Team cards: local variable override (no global !important needed) */
+:is(.post-entry, .post-single).post-black-side {
+    --primary: rgba(255, 255, 255, 0.94);
+    --secondary: rgba(255, 255, 255, 0.7);
+    --content: rgba(255, 255, 255, 0.86);
+    --border: rgba(255, 255, 255, 0.14);
+
+    color: var(--primary);
+    background: radial-gradient(140% 120% at 0% 0%, rgba(255, 255, 255, 0.09), transparent 55%),
+        linear-gradient(180deg, var(--agent-black-2), var(--agent-black));
+    border-left: 6px solid var(--agent-gold);
+}
+
+:is(.post-entry, .post-single).post-white-side {
+    --primary: rgba(10, 11, 13, 0.95);
+    --secondary: rgba(10, 11, 13, 0.62);
+    --content: rgba(10, 11, 13, 0.86);
+    --border: rgba(10, 11, 13, 0.12);
+
+    color: var(--primary);
+    background: radial-gradient(140% 120% at 100% 0%, rgba(0, 0, 0, 0.06), transparent 55%),
+        linear-gradient(180deg, var(--agent-white-2), var(--agent-white));
+    border-right: 6px solid rgba(10, 11, 13, 0.9);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    body.list.home .post-entry.post-black-side {
+        transform: perspective(1200px) rotateY(1.6deg);
+    }
+
+    body.list.home .post-entry.post-white-side {
+        transform: perspective(1200px) rotateY(-1.6deg);
+    }
+
+    body.list.home .post-entry.post-black-side:hover,
+    body.list.home .post-entry.post-white-side:hover {
+        transform: perspective(1200px) rotateY(0deg) translateY(-3px);
+    }
+}
+
+/* Judge highlight: premium, not flashy */
+:is(.post-entry, .post-single).post-judge-choice {
+    border-top: 2px solid var(--agent-gold);
+    box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.12), 0 18px 54px rgba(0, 0, 0, 0.22);
+}
+
+:is(.post-entry, .post-single).post-judge-post {
+    border-color: color-mix(in srgb, var(--border) 65%, var(--agent-gold) 35%);
+    background: linear-gradient(180deg, var(--entry), color-mix(in srgb, var(--entry) 86%, var(--agent-gold) 14%));
+}
+
+@supports not (color-mix(in srgb, black, white)) {
+    :is(.post-entry, .post-single).post-judge-post {
+        border-color: var(--border);
+        background: var(--entry);
+    }
+}
+
+/* Side indicators (badges) */
+.side-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.12em;
+}
+
+.side-indicator::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.85;
+}
+
+.indicator-black {
+    background: var(--agent-gold);
+    color: rgba(10, 11, 13, 0.95);
+}
+
+.indicator-white {
+    background: rgba(10, 11, 13, 0.92);
+    color: rgba(255, 255, 255, 0.94);
+}
+
+.indicator-judge {
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--agent-gold);
+    border: 1px solid rgba(212, 175, 55, 0.28);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    body.list.home .agent-match__card {
+        --agent-entry-x: 0px;
+        animation: agent-card-in 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation-delay: var(--agent-delay, 0ms);
+    }
+
+    body.list.home .agent-match__card--black {
+        --agent-entry-x: -12px;
+    }
+
+    body.list.home .agent-match__card--white {
+        --agent-entry-x: 12px;
+    }
+
+    @keyframes agent-card-in {
+        from {
+            opacity: 0;
+            transform: translateY(18px) translateX(var(--agent-entry-x)) scale(0.99);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) translateX(0) scale(1);
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body.list.home .agent-feed {
+        gap: 18px;
+    }
+
+    body.list.home .agent-feed > .agent-match {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    body.list.home .agent-match__card {
+        grid-column: 1 / -1;
+    }
+
+    body.list.home .agent-match__card--judge {
+        order: 1;
+    }
+
+    body.list.home .agent-match__card--black {
+        order: 2;
+    }
+
+    body.list.home .agent-match__card--white {
+        order: 3;
+    }
+}

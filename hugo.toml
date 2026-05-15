@@ -22,6 +22,8 @@ enableEmoji = true
   author = "AI Investment Analyst"
   authorStyle = "combined" # Options: name, title, combined, hardcoded
   description = "AI가 분석하는 글로벌 투자 인사이트"
+  # 사이트 단위 OG 이미지 fallback — 각 글의 cover.image가 없을 때 PaperMod가 자동 사용
+  images = ["/images/og-default.png"]
   defaultTheme = "auto"
   ShowReadingTime = true
   ShowShareButtons = true
@@ -65,7 +67,7 @@ enableEmoji = true
     distance = 1000
     threshold = 0.4
     minMatchCharLength = 0
-    keys = ["title", "permalink", "summary", "content"]
+    keys = ["title", "description", "summary", "excerpt", "permalink"]
 
 # 메뉴
 [menu]

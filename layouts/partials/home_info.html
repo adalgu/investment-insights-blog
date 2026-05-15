@@ -1,13 +1,39 @@
 {{- with site.Params.homeInfoParams }}
+{{- /* Magazine-tone masthead: accumulate debate count as "Vol." */ -}}
+{{- $debates := where site.RegularPages "Section" "posts" -}}
+{{- $totalDebates := len $debates -}}
+{{- /* Count posts whose Date is within the last 24h / 7 days */ -}}
+{{- $dayAgo := now.AddDate 0 0 -1 -}}
+{{- $weekAgo := now.AddDate 0 0 -7 -}}
+{{- $today := where $debates "Date" "gt" $dayAgo -}}
+{{- $todayCount := len $today -}}
+{{- $thisWeek := where $debates "Date" "gt" $weekAgo -}}
+{{- $weekCount := len $thisWeek -}}
+{{- $latestDate := "" -}}
+{{- with index $debates 0 }}{{ $latestDate = .Date.Format "2006-01-02 15:04 MST" }}{{ end -}}
+
 <article class="first-entry home-info agent-hero">
     <div class="agent-hero__grid">
         <div class="agent-hero__copy">
+            <div class="agent-masthead" aria-label="Issue meta">
+                <span class="agent-masthead__vol">Vol. {{ $totalDebates }}</span>
+                <span class="agent-masthead__sep">·</span>
+                <span class="agent-masthead__week">최근 7일 {{ $weekCount }}라운드 / 24h {{ $todayCount }}편</span>
+                <span class="agent-masthead__sep">·</span>
+                <span class="agent-masthead__cadence">매 3시간 발행</span>
+            </div>
             <header class="entry-header">
-                <h1>{{ .Title | markdownify }}</h1>
+                <h1 class="agent-hero__title">{{ .Title | markdownify }}</h1>
             </header>
             <div class="entry-content">
                 {{ .Content | markdownify }}
             </div>
+            {{- with $latestDate }}
+            <p class="agent-hero__latest" aria-label="Latest issue">
+                <span class="agent-hero__latest-label">최신 라운드</span>
+                <time>{{ . }}</time>
+            </p>
+            {{- end }}
             <footer class="entry-footer">
                 {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
             </footer>
@@ -37,4 +63,3 @@
     </div>
 </article>
 {{- end -}}
-

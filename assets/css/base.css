@@ -1,0 +1,179 @@
+/* Culinary Class Wars → 흑백에이전트: Premium UI layer (PaperMod override) */
+
+/* Document base */
+html,
+body {
+    background-color: var(--theme);
+}
+
+body {
+    font-family: var(--agent-font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+
+    background-image: var(--agent-noise);
+    background-attachment: fixed;
+}
+
+/* Layering so background effects never interfere with content */
+.main,
+.footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* Header: sticky, premium, always legible over split background */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    background: var(--agent-header-bg);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    border-bottom: 1px solid var(--agent-header-border);
+}
+
+.logo a {
+    letter-spacing: -0.02em;
+}
+
+.logo a svg {
+    color: var(--agent-gold);
+}
+
+.logo a img,
+.logo a svg {
+    transform: translate(0, -8%);
+}
+
+/* Navigation: pill active state instead of underline */
+#menu a span {
+    padding: 6px 10px;
+    border-radius: 999px;
+}
+
+#menu .active {
+    border-bottom: none;
+    background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+@supports not (color-mix(in srgb, black, white)) {
+    #menu .active {
+        background: rgba(127, 127, 127, 0.12);
+    }
+}
+
+/* Global focus ring */
+:where(a, button, input, textarea, select):focus-visible {
+    outline: 2px solid var(--agent-gold);
+    outline-offset: 3px;
+    border-radius: 10px;
+}
+
+/* List pages: widen just the feed (keep reading width for single pages) */
+body.list .main {
+    max-width: calc(var(--nav-width) + var(--gap) * 2);
+}
+
+/* Home stage: split background + axis + VS watermark */
+body.list.home {
+    background-image: var(--agent-noise),
+        linear-gradient(90deg, var(--agent-black) 0 50%, var(--agent-white) 50% 100%);
+    background-attachment: fixed, fixed;
+}
+
+body.list.home::before {
+    content: "";
+    position: fixed;
+    left: 50%;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, var(--agent-gold), transparent);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.list.home::after {
+    content: "VS";
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--agent-font-display);
+    font-size: min(26vw, 360px);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    color: rgba(127, 127, 127, 0.09);
+    pointer-events: none;
+    z-index: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    body.list.home::after {
+        animation: agent-vs-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes agent-vs-in {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1.03);
+        }
+
+        to {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+    }
+}
+
+/* Title rhythm (applies to feed entry headers, kept here as global typo) */
+.entry-header h2 {
+    font-weight: 760;
+    letter-spacing: -0.02em;
+    font-size: clamp(1.2rem, 1.1rem + 0.6vw, 1.55rem);
+}
+
+/* Search + terms (global chrome) */
+#searchbox input {
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    background: color-mix(in srgb, var(--entry) 96%, transparent);
+}
+
+#searchResults li {
+    background: color-mix(in srgb, var(--entry) 94%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border) 74%, transparent);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+}
+
+#searchResults .focus {
+    border-color: color-mix(in srgb, var(--border) 40%, var(--agent-gold) 60%);
+}
+
+.terms-tags a {
+    background: color-mix(in srgb, var(--entry) 92%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
+    border-radius: 999px;
+    padding: 6px 12px;
+}
+
+/*
+ * Reduced motion: hard reset for animation/transition/transform.
+ * `!important` is justified here because component CSS sets these via
+ * various selector specificities (e.g. body.list.home .post-entry.post-black-side),
+ * and the accessibility contract is "must override unconditionally".
+ */
+@media (prefers-reduced-motion: reduce) {
+    .post-entry,
+    .agent-hero,
+    body.list.home::after {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+}

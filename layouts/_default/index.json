@@ -1,0 +1,20 @@
+{{- /* Slim search index: drop full .Plain content to keep /index.json small.
+       Original PaperMod template embedded each post's full body, producing a
+       6.81MB / 1.77MB-gzip JSON. We expose title + summary + description +
+       permalink only, and add a 400-char excerpt from .Plain so Fuse.js can
+       still match body keywords without the full payload. */ -}}
+{{- $.Scratch.Add "index" slice -}}
+{{- range site.RegularPages -}}
+  {{- if and (not .Params.searchHidden) (ne .Layout `archives`) (ne .Layout `search`) }}
+    {{- $excerpt := substr (.Plain | plainify) 0 400 -}}
+    {{- $.Scratch.Add "index" (dict
+        "title" .Title
+        "permalink" .Permalink
+        "summary" .Summary
+        "description" .Description
+        "excerpt" $excerpt
+        "date" (.Date.Format "2006-01-02")
+    ) -}}
+  {{- end }}
+{{- end -}}
+{{- $.Scratch.Get "index" | jsonify -}}

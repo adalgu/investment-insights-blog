@@ -1,5 +1,13 @@
 {{- /* Head custom content area */ -}}
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" crossorigin>
-{{- $css := resources.Get "css/culinary-class-wars.css" | minify | fingerprint -}}
-<link crossorigin="anonymous" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" rel="stylesheet">
+{{- /*
+    Premium UI layer bundle: tokens → base → components.
+    Order matters (tokens first so vars exist; base before components so component
+    rules win when specificity ties; components last).
+*/ -}}
+{{- $tokens := resources.Get "css/tokens.css" -}}
+{{- $base := resources.Get "css/base.css" -}}
+{{- $components := resources.Match "css/components/*.css" -}}
+{{- $bundle := slice $tokens $base | append $components | resources.Concat "css/bundle.css" | minify | fingerprint -}}
+<link crossorigin="anonymous" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" rel="stylesheet">

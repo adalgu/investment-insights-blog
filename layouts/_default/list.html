@@ -68,11 +68,15 @@
 {{- $term := .Data.Term }}
 <div class="agent-feed">
 {{- if and .IsHome (gt (len $debatePages) 0) }}
+{{- $totalDebates := len $debatePages -}}
+{{- $pagerSize := site.Params.paginate | default 10 -}}
+{{- $pageOffset := mul (sub $paginator.PageNumber 1) $pagerSize -}}
 {{- range $index, $post := $paginator.Pages }}
 {{- $delayBase := mul $index 140 -}}
 {{- $judgeDelay := $delayBase -}}
 {{- $blackDelay := add $delayBase 60 -}}
 {{- $whiteDelay := add $delayBase 120 -}}
+{{- $roundNumber := sub $totalDebates (add $pageOffset $index) -}}
 
 {{/* Extract Black / White summaries from raw content */}}
 {{- $blackSummary := $post.Params.black_summary | default "" -}}
@@ -114,8 +118,11 @@
 
     {{/* ── Judge card: full debate post ── */}}
     <article class="post-entry agent-match__card agent-match__card--judge post-judge-post" style="--agent-delay: {{ $judgeDelay }}ms">
-        <div class="agent-post-badges">
-            <span class="side-indicator indicator-judge">📋 토론</span>
+        <div class="agent-post-badges agent-card-meta">
+            <span class="agent-card-meta__round" aria-label="라운드 번호">ROUND {{ $roundNumber }}</span>
+            <span class="agent-card-meta__sep" aria-hidden="true">·</span>
+            <time class="agent-card-meta__date" datetime="{{ $post.Date.Format "2006-01-02" }}">{{ $post.Date.Format "2006-01-02" }}</time>
+            <span class="side-indicator indicator-judge">토론</span>
         </div>
         {{- $isHidden := ($post.Param "cover.hiddenInList") | default ($post.Param "cover.hidden") | default false }}
         {{- partial "cover.html" (dict "cxt" $post "IsSingle" false "isHidden" $isHidden) }}
@@ -175,17 +182,7 @@
 {{- $class = "post-entry tag-entry" }}
 {{- end }}
 
-{{- $side := .Params.side | default "" -}}
-{{- $isWinner := eq .Params.winner "true" -}}
-{{- $sideClass := "" -}}
-{{- if eq $side "Black" }}{{ $sideClass = "post-black-side" }}{{ end -}}
-{{- if eq $side "White" }}{{ $sideClass = "post-white-side" }}{{ end -}}
-{{- if $isWinner }}{{ $sideClass = printf "%s post-judge-choice" $sideClass }}{{ end -}}
-
-<article class="{{ $class }} {{ $sideClass }}" style="--agent-delay: {{ mul $index 90 }}ms"{{ with $side }} data-side="{{ . | lower }}"{{ end }}{{ if $isWinner }} data-winner="true"{{ end }}>
-    {{- if eq $side "Black" }}<span class="side-indicator indicator-black">Team Black</span>{{ end }}
-    {{- if eq $side "White" }}<span class="side-indicator indicator-white">Team White</span>{{ end }}
-    {{- if $isWinner }}<span class="side-indicator indicator-judge">Judge's Pick</span>{{ end }}
+<article class="{{ $class }}" style="--agent-delay: {{ mul $index 90 }}ms">
     {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
     {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
     <header class="entry-header">
