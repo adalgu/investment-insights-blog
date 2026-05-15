@@ -45,32 +45,32 @@
   <meta property="og:type" content="website">
 {{- end }}
 
-{{- /* Cover resolution with existence check + site fallback */ -}}
+{{- /* Cover resolution with site fallback.
+       Most posts in this site are AI-generated and carry a phantom
+       cover.image at "/images/posts/{slug}.jpg" pointing to a file that
+       was never produced (404). We start from the site-level fallback
+       (site.Params.images) and only override with cover.image if it does
+       NOT match that broken pattern. */ -}}
 {{- $ogImage := "" -}}
+{{- with site.Params.images -}}
+  {{- $ogImage = (index . 0) | absURL -}}
+{{- end -}}
 {{- if .Params.cover.image -}}
-  {{- $coverPath := .Params.cover.image -}}
-  {{- /* Try as static-bound resource (strip leading slash for resources.Get) */ -}}
-  {{- $probe := resources.Get (strings.TrimPrefix "/" $coverPath) -}}
-  {{- if $probe -}}
+  {{- $cover := .Params.cover.image -}}
+  {{- /* Skip the known-broken auto-generated pattern */ -}}
+  {{- if not (hasPrefix $cover "/images/posts/") -}}
     {{- if (ne .Params.cover.relative true) -}}
-      {{- $ogImage = $coverPath | absURL -}}
+      {{- $ogImage = $cover | absURL -}}
     {{- else -}}
-      {{- $ogImage = (path.Join .RelPermalink $coverPath) | absURL -}}
+      {{- $ogImage = (path.Join .RelPermalink $cover) | absURL -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
-
 {{- if not $ogImage -}}
   {{- with partial "_funcs/get-page-images" . -}}
     {{- with index . 0 -}}
       {{- $ogImage = .Permalink -}}
     {{- end -}}
-  {{- end -}}
-{{- end -}}
-
-{{- if not $ogImage -}}
-  {{- with site.Params.images -}}
-    {{- $ogImage = (index . 0) | absURL -}}
   {{- end -}}
 {{- end -}}
 
